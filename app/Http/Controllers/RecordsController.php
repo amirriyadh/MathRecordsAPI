@@ -46,7 +46,7 @@ class RecordsController extends Controller
         //check if user has exceeded the maximux records count
         $check = Record::where('user_id',Auth::user()->id)->count();
         if($check >= 5) {
-            return response()->json(['error' => 'user has exceeded the maximun number of allowd records'],401);
+            return response()->json(['error' => 'user has exceeded the maximun number of allowd records'],403);
         }
         //create a record 
         $record_id = $this->getRecordNumber();
@@ -76,18 +76,6 @@ class RecordsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        // must be deleted 
-       
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -97,7 +85,7 @@ class RecordsController extends Controller
     {   
         //show record
         $record = $this->checkRecordId($id);
-        if($record == null) return response()->json(['error' => 'invalid record id'],401);  
+        if($record == null) return response()->json(['error' => 'invalid record id'],403);  
 
         $reference = Fork::where('forking_id',$record->id)->first();
 
@@ -105,17 +93,6 @@ class RecordsController extends Controller
         $success['freeze'] = $record->freeze ;
         if($reference != null) $success['reference'] = $reference->forked_id ;
         return response()->json(['success' => $success],200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        // must be deleted 
     }
 
     /**
@@ -134,8 +111,8 @@ class RecordsController extends Controller
 
         //check record id
         $record = $this->checkRecordId($id);
-        if($record == null) return response()->json(['error' => 'invalid record id'],401);     
-        if($record->freeze == 1) return response()->json(['error' => 'the record is freezed'],401); 
+        if($record == null) return response()->json(['error' => 'invalid record id'],403);     
+        if($record->freeze == 1) return response()->json(['error' => 'the record is freezed'],403); 
         //perfom operations
         $result = $record->value ;
         switch ($request->operation){
@@ -143,11 +120,11 @@ class RecordsController extends Controller
             case 'sub': $result -=$request->value; break ;
             case 'mul': $result *=$request->value; break ;
             case 'div': {
-                if($result ==0) return response()->json(['error' => 'current record value is 0, you can not divide by 0 '],401);
+                if($result ==0) return response()->json(['error' => 'current record value is 0, you can not divide by 0 '],403);
                 $result /=$request->value; 
                 break ;
             }
-            default: return response()->json(['error' => 'invalid operation'],401);
+            default: return response()->json(['error' => 'invalid operation'],403);
         }
 
         //update record value
@@ -176,7 +153,7 @@ class RecordsController extends Controller
     public function viewHistory($id){
         //check record id
         $record = $this->checkRecordId($id);
-        if($record == null) return response()->json(['error' => 'invalid record id'],401);
+        if($record == null) return response()->json(['error' => 'invalid record id'],403);
         //fetch history data
         $history = History::select('steps','operation','op_value','value','created_at')
             ->where('record_id', $record->id)
@@ -189,7 +166,7 @@ class RecordsController extends Controller
     public function freeze ($id) {
         //check record id
         $record = $this->checkRecordId($id);
-        if($record == null) return response()->json(['error' => 'invalid record id'],401);
+        if($record == null) return response()->json(['error' => 'invalid record id'],403);
 
         //freeze
         $newRecord = Record::where('id',$record->id)
@@ -202,7 +179,7 @@ class RecordsController extends Controller
     public function unfreeze ($id) {
         //check record id
         $record = $this->checkRecordId($id);
-        if($record == null) return response()->json(['error' => 'invalid record id'],401);
+        if($record == null) return response()->json(['error' => 'invalid record id'],403);
 
         //unfreeze
         $newRecord = Record::where('id',$record->id)
@@ -215,7 +192,7 @@ class RecordsController extends Controller
     public function operationsCount ($id) {
         //check record id
         $record = $this->checkRecordId($id);
-        if($record == null) return response()->json(['error' => 'invalid record id'],401);
+        if($record == null) return response()->json(['error' => 'invalid record id'],403);
 
         $operations = History::where('record_id',$record->id)
             ->count();
@@ -236,7 +213,7 @@ class RecordsController extends Controller
     public function fork ($id) {
         //check record id
         $record = $this->checkRecordId($id);
-        if($record == null) return response()->json(['error' => 'invalid record id'],401);
+        if($record == null) return response()->json(['error' => 'invalid record id'],403);
 
         //create new record 
         $newRecord_id = $this->getRecordNumber();
@@ -275,13 +252,13 @@ class RecordsController extends Controller
     public function rollback ($id){
         //check record id
         $record = $this->checkRecordId($id);
-        if($record == null) return response()->json(['error' => 'invalid record id'],401);
+        if($record == null) return response()->json(['error' => 'invalid record id'],403);
 
         $rollback = History::where('record_id',$record->id)
             ->orderBy('steps', 'desc')
             ->first()
             ->delete();
-        if($rollback == 0) return response()->json(['error' => 'no history for this record'],401);
+        if($rollback == 0) return response()->json(['error' => 'no history for this record'],403);
 
         $data = History::select('steps','operation','op_value','value','created_at')
             ->where('record_id',$record->id)
@@ -308,7 +285,7 @@ class RecordsController extends Controller
         $record = Record::where('user_id',Auth::user()->id)
             ->where('id',$id)
             ->delete();
-        if($record==0) return response()->json(['error' => 'invalid record id'],401);
+        if($record==0) return response()->json(['error' => 'invalid record id'],403);
         //delete record history
         $history = History::where('record_id',$id)->delete();
         return response()->json(['success' => ''],200);

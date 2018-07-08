@@ -1,60 +1,84 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# <center>Math Records Web Service</center>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## Introduction
+A RESTFUL API that do basic mathmatical operations on records like addition, subtraction, multiplicationn and division. 
 
-## About Laravel
+## Examples
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+Register an account by sending POST request to https://mathrecords.herokuapp.com/api/register with email, name, password, c_password
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Response
+``` 
+{
+    "success": {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ2ODk5NDliYzcxMDMwNGY1OTExMTdjOGU2NjEzYTY3YTA3YjBiNjA5YjZhZWYyNmZjN2VkM2M2OTkwMTY1OTk4MWRkNzkyZGZmMTgzMDUyIn0.eyJhdWQiOiIxIiwianRpIjoiNDY4OTk0OWJjNzEwMzA0ZjU5MTExN2M4ZTY2MTNhNjdhMDdiMGI2MDliNmFlZjI2ZmM3ZWQzYzY5OTAxNjU5OTgxZGQ3OTJkZmYxODMwNTIiLCJpYXQiOjE1MzA5NzYyNDEsIm5iZiI6MTUzMDk3NjI0MSwiZXhwIjoxNTYyNTEyMjQxLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.j3J_ykIkP_-e59wOD3t19tzVF8M0Cr8PtMKBnssN4Z6WKRGQLnKRpIsssC14jkOovVfNjIJ7eRUXvgrdCRr-Q7aTB_LBDkgDUSqAG8tASft6Yu4vxHOYheO1knK9S8XBDr1M8mw7ndwgnu1ZQ-r3sASImJulWIQPizZFe1_46k1uUQYdPmf0NCQwltPBzkAz0_cZ1OVKX5FExyIrEi4ME9HfvAfPCTlqtpU0e_JueQLsWg0ogTn6qJfPuWGmdIcyEKJzTEfFaR7km8SQ0KITkBk8kV0gEmjBiqwJw1iPxr31E-ep_wf6Q-u935eRtpIKEGLjdy-ifm-ZI8Ktx06feAP4G3S2-Qul-DWbWLVxiCGA-qxngtYlXythFfwsilY-b597wo1g0ZykMxnyZnkRPGSAZRPnWU9EYWcT2tXQrByo4SVgWMXMEkAht98daAZRpwBIVL6yKFrzqvZHmYgPwg58bkFiDRoWrey6qv2dbc7JGwrzeExvBhP36oFrp40CMi7VaaS3wR1mJk8RsJX8ZPfPkwe-raDmi_RonMXLeYyPlgXF0FIffoJWFtY2dSWFgVRvQdxoohpUV5sxjAw3hFGEqojzlxS5i-hKlOy7ddRP8xYaDVLdOxbnuxerKISXa0K6xrTyqndL8sE_RhgYUgJMtSJxzkrJMZQClFGe9g0",
+        "name": "amir"
+    }
+}
+```
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+Creating a record by sending POST request to https://mathrecords.herokuapp.com/api/record/create with base value also  header should contain a valid token 
 
-## Learning Laravel
+Response
+```
+{
+    "success": {
+        "step": 0,
+        "operation": "create",
+        "value": "50",
+        "id": "71128"
+    }
+}
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+Forking a record of id 21570 by sending GET request to  https://mathrecords.herokuapp.com/api/record/fork/21570 
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+Response 
+```
+{
+    "success": {
+        "id": "90470",
+        "value": "200",
+        "reference": 21570
+    }
+}
+```
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
+## Routes
 
-## Contributing
+| Method  | URI               | Params|Header|Name   |
+| ------- | ------------------|-----|--|--------|
+|POST|api/register |email, name, password, c_password||Registeration|
+|POST|api/login |email, password||Login|
+|POST|api/get-details||Authorization, Accept|User Details|
+|GET|api/record ||Authorization, Accept|Display Records|
+|POST|api/record/create |value|Authorization, Accept|Create Record|
+|DELETE|api/record/{record} ||Authorization, Accept|Delete Record|
+|GET|api/record/{record}||Authorization, Accept|Record Status|
+|PUT|api/record/{record} |value, operation|Authorization, Accept, Content-Type|Perform Operation|
+|GET|api/record/history/{record} ||Authorization, Accept|Record History|
+|POST|api/record/freeze/{record} ||Authorization, Accept|Freeze Record|
+|POST|api/record/unfreeze/{record} ||Authorization, Accept|Unfreeze Record|
+|GET|api/record/rollback/{record} ||Authorization, Accept|Rollback|
+|GET|api/record/op-count/{record} ||Authorization, Accept|Operations Count|
+|GET|api/record/op-count/all ||Authorization, Accept|All Ops Count|
+|GET|api/record/fork/{record} ||Authorization, Accept|Fork Record|
+| | |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Notes
 
-## Security Vulnerabilities
+Header data must be as follows:
+* Authorization = Bearer 'yourToken'
+* Accept = application/json
+* Content-Type = application/x-www-form-urlencoded
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Params data types
+* email : String - should follow email structure
+* password, c_password, name : String
+* value : Numeric
+* operation : String - must be [ add, sub, div, mul ]
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Built with
+* [Php](http://php.net/) using [Laravel](https://laravel.com) framework
